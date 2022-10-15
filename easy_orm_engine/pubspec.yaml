@@ -1,0 +1,20 @@
+name: easy_orm_engine
+description: A simple ORM for Dart & Postgresql
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: '>=2.17.3 <3.0.0'
+
+dependencies:
+  freezed_annotation: ^2.1.0
+  json_annotation: ^4.6.0
+  postgres: ^2.5.0
+  tuple: ^2.0.0
+
+dev_dependencies:
+  build_runner: ^2.2.0
+  freezed: ^2.1.0+1
+  json_serializable: ^6.3.1
+  lints: ^2.0.0
+  test: ^1.16.0

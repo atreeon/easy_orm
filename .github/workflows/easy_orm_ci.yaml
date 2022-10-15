@@ -1,0 +1,88 @@
+name: Dart CI
+
+on: [push]
+
+jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+
+    # Docker Hub image that `container-job` executes in
+    container:
+      image:  dart:2.18.2
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+        # Check postgres is up and ready
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check out app and get dependencies
+        working-directory: ./easy_orm_engine
+        run:  |
+          dart pub get
+
+      - uses: actions/checkout@v3
+      - name: Check out app and get dependencies
+        working-directory: ./easy_orm_cli
+        run:  |
+          dart pub get
+
+      - uses: actions/checkout@v3
+      - name: Check out app and get dependencies
+        working-directory: ./example
+        run:  |
+          dart pub get
+
+      - name: Install psql #so we can run scripts
+        run: |
+          apt-get update
+          apt-get install --yes --no-install-recommends postgresql-client
+
+      - name: Load Northwind.sql into postgres
+        working-directory: .
+        run: |
+          export PGPASSWORD='postgres'
+          psql -U postgres -d postgres -h postgres -p 5432 -a -f resources/northwind.sql
+
+      - name: Run tests engine
+        working-directory: ./easy_orm_engine
+        run: dart run test
+        env:
+          TEST_DB_CONFIG: ciserver_test_db.yaml
+
+      - name: Run tests cli
+        working-directory: ./easy_orm_cli
+        run: dart run test
+        env:
+          TEST_DB_CONFIG: ciserver_test_db.yaml
+
+      - name: Run example generate
+        working-directory: ./example
+        run: dart ../easy_orm_cli/bin/easy_orm_cli.dart generate --host postgres --port 5432 --db postgres -u postgres -p postgres --schema public --package example
+
+      - name: Build freezed objects for example
+        working-directory: ./example
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests example
+        working-directory: ./example
+        run: dart run test
+        env:
+          TEST_DB_CONFIG: ciserver_test_db.yaml

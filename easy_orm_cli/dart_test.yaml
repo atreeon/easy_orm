@@ -1,0 +1,9 @@
+#exclude_tags: integration
+
+presets:
+  local:
+    exclude_tags: integration
+
+  everything:
+    paths:
+      - test/

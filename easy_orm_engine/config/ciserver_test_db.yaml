@@ -1,0 +1,5 @@
+username: postgres
+db: postgres
+password: postgres
+host: postgres
+port: 5432

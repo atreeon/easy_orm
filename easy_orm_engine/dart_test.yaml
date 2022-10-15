@@ -1,0 +1,9 @@
+presets:
+  # Use this when you need completely un-munged stack traces.
+  local:
+    exclude_tags: integration
+
+  # Shortcut for running only browser tests.
+  everything:
+    paths:
+      - test/

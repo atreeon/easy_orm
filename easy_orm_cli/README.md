@@ -1,0 +1,1 @@
+The CLI used to generate ORM code for easy_orm

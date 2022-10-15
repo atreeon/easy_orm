@@ -1,0 +1,126 @@
+POSTGRES CLIENT
+√Limitations
+    √cannot track a graph like EF but I don't usually do that anyway
+
+*VERSION 0.1
+    √create code to generate my postgrest statements
+        √filter with and
+            √generate string
+            √doesn't work in postman
+                √employees?employee_id=gt.6&and=(employee_id.lt.1)&and=(employee_id.lt.3)&and=(employee_id.lt.4)
+                    √how to view the sql generated?
+            √it doesn't work
+            √https://github.com/PostgREST/postgrest/discussions/2463
+    √MAJOR CHANGE - POSTGREST SYNTAX WASN'T NICE SO DOING A SQL VERSION ONLY
+    √select
+    √orderby
+    √set object from json
+        √try freezed
+        √CHANGE - JSON NOT RETURNED
+    √map postgres return data to the model
+        √what about our custom selects?
+            √pass in a custom model
+            √a list of columns will map to the result
+                √custom table would have to be in order of requested output
+    √integration tests
+        √try with live data
+    √code gen to create my services
+        √create Templater: my own dart program; input: template, code: replace markers, output: text
+            √replace tokens
+            √replace sub template
+            √replace sub sub template
+            √replace repeatable template
+            √remove comment lines
+            √load files from folder
+            √add to github
+            √output directory
+            √pass a list to Templater
+        √create cli project
+            √run cli 
+                √create templates as a text variables
+                √load templates
+                √get version
+                √generate (print only)
+                √mock tables for now
+                √create a map for each table
+                √call templater and output to a set directory
+                √propertySetColumns not being replaced
+            √move my generated files to the example folder & run there
+                √ensuring everything compiles & references are correct
+            √add tests for my cli & it's output
+            √create multiple table definitions & services (loop)
+            √replace mock tables with a get database tables call
+                √mock tables
+                    √convertTablesToMap
+                √create stored proc to get db tables & columns
+                    √access db & get tables
+                        √SUPABASE / POSTGRESSQL NOT RETRIEVING DATA FROM INFORMATION_SCHEMA
+                            √check settings
+                            √stack overflow / github issues
+                            √error with '\_%', unsure why, removed
+                    √write and output a file called 'tablesInput.dart' of type Table[]
+                    √run and get generator output & test to work
+                    √create a model for the table
+            √create cli command that takes as input the db connection
+                √currently deleting my models directory
+                √not appending Service / Definition to the filenames
+                √package import not working
+                √change to lib folder
+                √model to remove the plural 's' from the filename
+            √specify just the main generated directory then create sub dirs
+            √run sql queries in example to test
+    *remove all references to the connection strings
+        *docker & setup DI
+            √create working simple example
+                √create docker postgres locally
+                    √create test that connects to docker postgres
+                √connect to local docker from my dart code & test
+                √create test.yml & connect to postgres
+                √load sql script & run on docker
+                    √try using psql
+                √replace strings in my runQuery with env variables
+                    √use a config file (local & CI)
+                    √setup test environment locally (cmd) & set env variables
+            *move that simple example over to postgrestyped
+                *tidy up code
+                    √where does my test write my generated files?
+                    √rename project to simple_orm
+                    √tidy up orm_cli
+                    *tidy up engine
+                    ensure my example project runs correctly
+        remove all connection strings from checkin
+    github push
+        squash
+        push
+
+
+VERSION 0.2
+    use tokenised parameters in sql
+    insert 
+    update
+    delete
+
+VERSION 0.3
+    inner join
+    outer join
+    left join / right join
+    populating the relations
+
+VERSION 0.4
+    stored procedures / functions
+    views
+    take / skip / paging
+    create own simple version of freezed as alternative for model
+    add an 'except' and 'only' / whitelist / blacklist for tables & columns
+    release version 0.4
+        https://stackoverflow.com/questions/67750537/activating-a-dart-app-with-pub-global-activate
+
+VERSION 0.5
+    custom select with custom object
+    group by
+    having
+    union
+    subqueries
+
+
+
