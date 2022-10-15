@@ -10,15 +10,18 @@ export PGPASSWORD='postgres'; psql -U postgres -d postgres -h localhost -p 5433 
 
 (
   cd example;
+  dart pub get;
   dart test;
 )
 
 (
   cd easy_orm_cli;
+  dart pub get;
   dart test;
 )
 
 (
   cd easy_orm_engine;
+  dart pub get;
   dart test;
 )
