@@ -1,5 +1,7 @@
 var model_template = """--inputs: className, tableName, columns as List<Column>, classOutputName
+// ignore_for_file: unused_import
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:typed_data';
 part '%%%modelName%%%.freezed.dart';
 part '%%%modelName%%%.g.dart';
 

@@ -8,13 +8,15 @@ String lookupDbType(String dbType, Map<String, String> lookup) {
   return result;
 }
 
+var unsupportedColumnTypes = ["bytea"];
+
 var convertDbTypeToDartType = {
   "int2": "int",
   "int4": "int",
   "bool": "bool",
   "bpchar": "String",
-  "bytea": "String",
-  "date": "String",
+  // "bytea": "Uint8List",
+  "date": "DateTime",
   "text": "String",
   "varchar": "String",
   "float4": "double",
@@ -24,10 +26,10 @@ var convertDbTypeToDartType = {
 var convertDbTypeToColumnType = {
   "int2": "Numeric",
   "int4": "Numeric",
-  "bool": "bool",
+  "bool": "Bool",
   "bpchar": "Char",
-  "bytea": "Char",
-  "date": "Char",
+  // "bytea": "Uint8List",
+  "date": "DateTime",
   "text": "Char",
   "varchar": "Char",
   "float4": "Numeric",

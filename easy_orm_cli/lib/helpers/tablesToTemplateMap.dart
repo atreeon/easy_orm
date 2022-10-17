@@ -5,7 +5,7 @@ import 'package:postgrest_cli/util/dePluralise.dart';
 import 'Table.dart';
 
 ///converts our list of Tables & Columns to our Map to be used in our templates
-Map<String, Map<String, dynamic>> tablesToTemplateMap(
+Map<String, Map<String, dynamic>> convertTablesToTemplateMap(
   List<Table> tables,
   String packageName,
   String Function(Table) getFilename,
@@ -20,11 +20,13 @@ Map<String, Map<String, dynamic>> tablesToTemplateMap(
         "columns": table.columns
             .map((column) => {
                   "dbType": column.dbType,
-                  "dartType": lookupDbType(column.dbType, convertDbTypeToDartType),
+                  "dartType": lookupDbType(column.dbType, convertDbTypeToDartType) + (column.nullable ? "?" : ""),
                   "columnName": column.columnName,
                   "nullable": column.nullable.toString(),
                   "tableName": table.name,
-                  "columnType": lookupDbType(column.dbType, convertDbTypeToColumnType),
+                  "columnType": (column.nullable ? "Nullable" : "") + lookupDbType(column.dbType, convertDbTypeToColumnType),
+                  "modelName": dePluralise(StringUtils.capitalize(table.name)),
+                  "isIdentity": column.isIdentity.toString(),
                 })
             .toList(),
         "modelName": dePluralise(StringUtils.capitalize(table.name)),

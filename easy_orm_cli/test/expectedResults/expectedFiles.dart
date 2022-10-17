@@ -1,54 +1,60 @@
 var expectedService = """import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
-import 'package:easy_orm_engine/IService.dart';
-import 'package:easy_orm_engine/clauseObjects/OrderBy.dart';
-import 'package:easy_orm_engine/clauseObjects/Select.dart';
-import 'package:easy_orm_engine/clauseObjects/Where.dart';
+import 'package:easy_orm_engine/service/IService.dart';
+import 'package:postgres/postgres.dart';
 
 class Us_statesService extends IService<Us_statesDefinition, Us_state> {
   final Us_statesDefinition tableDefinition = Us_statesDefinition();
-  final Where Function(Us_statesDefinition e)? where;
-  final Select<Us_statesDefinition> Function(Us_statesDefinition e)? select;
-  final OrderBy Function(Us_statesDefinition e)? orderBy;
+  final PostgreSQLExecutionContext connection;
 
-  Us_statesService({this.where, this.select, this.orderBy});
+  Us_statesService(PostgreSQLExecutionContext this.connection);
 }
 """;
 
-var expectedDefinition = """import 'package:easy_orm_engine/column.dart';
+var expectedDefinition = """// ignore_for_file: unused_import
+import 'package:easy_orm_engine/column.dart';
 import 'package:easy_orm_engine/ITableDefinition.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
+import 'dart:typed_data';
 
-class Us_statesDefinition implements ITableDefinition {
+class Us_statesDefinition implements ITableDefinition<Us_state> {
   final String tableName = "us_states";
 
 
-  ColumnNumeric<int> state_id = ColumnNumeric<int>(
+  ColumnNumeric<int, Us_state> state_id = ColumnNumeric<int, Us_state>(
     name: "state_id",
     nullable: false,
+    isIdentity: true,
     datatype: "int2",
-    getValue: (row) => row["us_states"]!["state_id"],
+    getDbValue: (row) => row["us_states"]!["state_id"],
+    getModelValue: (model) => model.state_id,
   );
 
-  ColumnChar<String> state_abbr = ColumnChar<String>(
+  ColumnNullableChar<String?, Us_state> state_abbr = ColumnNullableChar<String?, Us_state>(
     name: "state_abbr",
     nullable: true,
+    isIdentity: false,
     datatype: "varchar",
-    getValue: (row) => row["us_states"]!["state_abbr"],
+    getDbValue: (row) => row["us_states"]!["state_abbr"],
+    getModelValue: (model) => model.state_abbr,
   );
 
-  ColumnChar<String> state_name = ColumnChar<String>(
+  ColumnNullableChar<String?, Us_state> state_name = ColumnNullableChar<String?, Us_state>(
     name: "state_name",
     nullable: true,
+    isIdentity: false,
     datatype: "varchar",
-    getValue: (row) => row["us_states"]!["state_name"],
+    getDbValue: (row) => row["us_states"]!["state_name"],
+    getModelValue: (model) => model.state_name,
   );
 
-  ColumnChar<String> state_region = ColumnChar<String>(
+  ColumnNullableChar<String?, Us_state> state_region = ColumnNullableChar<String?, Us_state>(
     name: "state_region",
     nullable: true,
+    isIdentity: false,
     datatype: "varchar",
-    getValue: (row) => row["us_states"]!["state_region"],
+    getDbValue: (row) => row["us_states"]!["state_region"],
+    getModelValue: (model) => model.state_region,
   );
 
 
@@ -63,5 +69,7 @@ state_region: row[this.tableName]![this.state_region.name],
 
     );
   }
+  
+  String get insertIntoHeader => 'INSERT INTO us_states(state_id,state_abbr,state_name,state_region) VALUES';
 }
 """;
