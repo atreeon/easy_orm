@@ -4,4 +4,4 @@ export PGPASSWORD='postgres'; psql -U postgres -d postgres -h localhost -p 5433 
 
 ./setupGenerateCode.sh
 
-./runAllTestsLocallyAndPubGet.sh
+./setupRunAllTestsLocallyAndPubGet.sh

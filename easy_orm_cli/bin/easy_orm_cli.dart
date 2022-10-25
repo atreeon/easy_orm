@@ -86,6 +86,11 @@ Future<void> _main(List<String> args) async {
 
       if (!await Directory("lib").exists()) {
         print('lib folder must exist');
+        print(Directory.current.path);
+        var dir = Directory.current;
+        var entities = await dir.list().toList();
+        print(entities.join(","));
+        print('lib folder must exist');
         return;
       }
 

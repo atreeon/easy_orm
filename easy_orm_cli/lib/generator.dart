@@ -33,9 +33,9 @@ Future<List<String>> performGenerate({
     await Directory("lib/generatedDb/definitions").create();
   }
 
-  if (!await Directory("lib/generatedDb/services").exists()) {
-    await Directory("lib/generatedDb/services").create();
-  }
+  // if (!await Directory("lib/generatedDb/services").exists()) {
+  //   await Directory("lib/generatedDb/services").create();
+  // }
 
   //get the list of tables from the db
   var tablesRaw = await getTablesRawFromDb(postgresConnection, table_schema);
