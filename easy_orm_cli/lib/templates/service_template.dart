@@ -1,16 +1,12 @@
-var service_template = """--inputs: className, modelName
+var service_template = """--inputs: packageName, name, modelName
 import 'package:%%%packageName%%%/generatedDb/definitions/%%%name%%%Definition.dart';
 import 'package:%%%packageName%%%/generatedDb/models/%%%modelName%%%.dart';
-import 'package:easy_orm_engine/IService.dart';
-import 'package:easy_orm_engine/clauseObjects/OrderBy.dart';
-import 'package:easy_orm_engine/clauseObjects/Select.dart';
-import 'package:easy_orm_engine/clauseObjects/Where.dart';
+import 'package:easy_orm_engine/service/IService.dart';
+import 'package:postgres/postgres.dart';
 
 class %%%name%%%Service extends IService<%%%name%%%Definition, %%%modelName%%%> {
   final %%%name%%%Definition tableDefinition = %%%name%%%Definition();
-  final Where Function(%%%name%%%Definition e)? where;
-  final Select<%%%name%%%Definition> Function(%%%name%%%Definition e)? select;
-  final OrderBy Function(%%%name%%%Definition e)? orderBy;
+  final PostgreSQLExecutionContext connection;
 
-  %%%name%%%Service({this.where, this.select, this.orderBy});
+  %%%name%%%Service(PostgreSQLExecutionContext this.connection);
 }""";

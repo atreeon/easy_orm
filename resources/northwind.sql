@@ -3905,7 +3905,17 @@ ALTER TABLE ONLY customer_customer_demo
 ALTER TABLE ONLY employees
     ADD CONSTRAINT fk_employees_employees FOREIGN KEY (reports_to) REFERENCES employees;
 
-    
+ALTER TABLE us_states
+    ALTER state_id ADD GENERATED ALWAYS AS IDENTITY
+        (START WITH 2);
+
+SELECT setval(pg_get_serial_sequence('us_states', 'state_id'), max(state_id)) FROM us_states;
+
+ALTER TABLE employees
+    ALTER employee_id ADD GENERATED ALWAYS AS IDENTITY
+        (START WITH 2);
+
+SELECT setval(pg_get_serial_sequence('employees', 'employee_id'), max(employee_id)) FROM employees;
 --
 -- PostgreSQL database dump complete
 --

@@ -1,3 +1,5 @@
+import 'package:postgrest_cli/helpers/lookupDbType.dart';
+
 import '../../util/linqH.dart';
 import 'Column.dart';
 import 'Table.dart';
@@ -15,11 +17,15 @@ List<Table> convertRawTablesToTables(List<Map<String, Map<String, dynamic>>> raw
     return Table(
       e.key,
       e.values
-          .map((x) => Column(
-                dbType: x["udt_name"],
-                columnName: x["column_name"],
-                nullable: x["is_nullable"] == "YES" ? true : false,
-              ))
+          .map(
+            (x) => Column(
+              dbType: x["udt_name"],
+              columnName: x["column_name"],
+              nullable: x["is_nullable"] == "YES" ? true : false,
+              isIdentity: x["is_identity"] == "YES" ? true : false,
+            ),
+          )
+          .where((c) => !unsupportedColumnTypes.any((unsupportedType) => c.dbType == unsupportedType))
           .toList(),
     );
   }).toList();

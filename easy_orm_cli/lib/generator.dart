@@ -10,7 +10,6 @@ import 'package:postgrest_cli/templates/definition_template.dart';
 import 'package:postgrest_cli/templates/modelParameters_subTemplate.dart';
 import 'package:postgrest_cli/templates/model_template.dart';
 import 'package:postgrest_cli/templates/propertySet_subTemplate.dart';
-import 'package:postgrest_cli/templates/service_template.dart';
 import 'package:postgrest_cli/util/dePluralise.dart';
 import 'package:templater_atreeon/templater_atreeon.dart';
 
@@ -34,26 +33,27 @@ Future<List<String>> performGenerate({
     await Directory("lib/generatedDb/definitions").create();
   }
 
-  if (!await Directory("lib/generatedDb/services").exists()) {
-    await Directory("lib/generatedDb/services").create();
-  }
+  // if (!await Directory("lib/generatedDb/services").exists()) {
+  //   await Directory("lib/generatedDb/services").create();
+  // }
 
   //get the list of tables from the db
   var tablesRaw = await getTablesRawFromDb(postgresConnection, table_schema);
   var tables = convertRawTablesToTables(tablesRaw);
 
   //get maps for each template
-  var serviceMap = tablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Service.dart");
-  var definitionMap = tablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Definition.dart");
-  var modelMap = tablesToTemplateMap(tables, packageName, (x) => dePluralise(StringUtils.capitalize(x.name)) + ".dart");
+  //We've removed service file from the generated output files
+  // var serviceMap = convertTablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Service.dart");
+  var definitionMap = convertTablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Definition.dart");
+  var modelMap = convertTablesToTemplateMap(tables, packageName, (x) => dePluralise(StringUtils.capitalize(x.name)) + ".dart");
 
-  //process service template
-  var serviceTemplater = Templater(templateMain: service_template);
-  var serviceOutput = await serviceTemplater.writeFiles(
-    "lib/generatedDb/services",
-    serviceMap,
-    writeFiles: writeFiles,
-  );
+  // //process service template
+  // var serviceTemplater = Templater(templateMain: service_template);
+  // var serviceOutput = await serviceTemplater.writeFiles(
+  //   "lib/generatedDb/services",
+  //   serviceMap,
+  //   writeFiles: writeFiles,
+  // );
 
   //process definition template
   var definitionTemplater = Templater(
@@ -83,5 +83,9 @@ Future<List<String>> performGenerate({
     writeFiles: writeFiles,
   );
 
-  return [...serviceOutput, ...definitionOutput, ...modelOutput];
+  return [
+    // ...serviceOutput,
+    ...definitionOutput,
+    ...modelOutput,
+  ];
 }
