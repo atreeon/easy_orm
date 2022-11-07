@@ -1,4 +1,4 @@
-import 'package:postgrest_cli/util/dePluralise.dart';
+import 'package:easy_orm_cli/util/dePluralise.dart';
 import 'package:test/test.dart';
 
 void main() {

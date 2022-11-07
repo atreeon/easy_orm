@@ -1,6 +1,6 @@
-import 'package:postgrest_cli/helpers/Column.dart';
-import 'package:postgrest_cli/helpers/Table.dart';
-import 'package:postgrest_cli/helpers/tablesToTemplateMap.dart';
+import 'package:easy_orm_cli/helpers/Column.dart';
+import 'package:easy_orm_cli/helpers/Table.dart';
+import 'package:easy_orm_cli/helpers/tablesToTemplateMap.dart';
 import 'package:test/test.dart';
 
 main() {

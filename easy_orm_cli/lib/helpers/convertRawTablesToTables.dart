@@ -1,4 +1,4 @@
-import 'package:postgrest_cli/helpers/lookupDbType.dart';
+import 'package:easy_orm_cli/helpers/lookupDbType.dart';
 
 import '../../util/linqH.dart';
 import 'Column.dart';

@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:postgres/postgres.dart';
-import 'package:postgrest_cli/helpers/convertRawTablesToTables.dart';
-import 'package:postgrest_cli/helpers/getTablesRawFromDb.dart';
-import 'package:postgrest_cli/helpers/tablesToTemplateMap.dart';
-import 'package:postgrest_cli/templates/column_subTemplate.dart';
-import 'package:postgrest_cli/templates/definition_template.dart';
-import 'package:postgrest_cli/templates/modelParameters_subTemplate.dart';
-import 'package:postgrest_cli/templates/model_template.dart';
-import 'package:postgrest_cli/templates/propertySet_subTemplate.dart';
-import 'package:postgrest_cli/util/dePluralise.dart';
+import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
+import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
+import 'package:easy_orm_cli/helpers/tablesToTemplateMap.dart';
+import 'package:easy_orm_cli/templates/column_subTemplate.dart';
+import 'package:easy_orm_cli/templates/definition_template.dart';
+import 'package:easy_orm_cli/templates/modelParameters_subTemplate.dart';
+import 'package:easy_orm_cli/templates/model_template.dart';
+import 'package:easy_orm_cli/templates/propertySet_subTemplate.dart';
+import 'package:easy_orm_cli/util/dePluralise.dart';
 import 'package:templater_atreeon/templater_atreeon.dart';
 
 Future<List<String>> performGenerate({

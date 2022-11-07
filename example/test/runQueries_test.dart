@@ -1,9 +1,9 @@
-import 'package:easy_orm_engine/clauseObjects/OrderBy.dart';
-import 'package:easy_orm_engine/clauseObjects/Update.dart';
-import 'package:easy_orm_engine/clauseObjects/Where.dart';
-import 'package:easy_orm_engine/dbConnection/getPostgresConnectionFromConfig.dart';
-import 'package:easy_orm_engine/service/EasyOrm.dart';
-import 'package:easy_orm_engine/service/SqlResponse.dart';
+import 'package:easy_orm_postgres/clauseObjects/OrderBy.dart';
+import 'package:easy_orm_postgres/clauseObjects/Update.dart';
+import 'package:easy_orm_postgres/clauseObjects/Where.dart';
+import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
+import 'package:easy_orm_postgres/service/EasyOrm.dart';
+import 'package:easy_orm_postgres/service/SqlResponse.dart';
 import 'package:example/generatedDb/definitions/EmployeesDefinition.dart';
 import 'package:example/generatedDb/definitions/TerritoriesDefinition.dart';
 import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';

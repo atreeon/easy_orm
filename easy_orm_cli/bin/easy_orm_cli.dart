@@ -2,14 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:easy_orm_engine/dbConnection/getPostgresConnection.dart';
 import 'package:colorize/colorize.dart';
-import 'package:postgrest_cli/generator.dart';
-import 'package:postgrest_cli/util/command_line_tools.dart';
-import 'package:postgrest_cli/util/internal_error.dart';
-import 'package:postgrest_cli/util/version.dart';
+import 'package:easy_orm_cli/generator.dart';
+import 'package:easy_orm_cli/helpers/checkFolderStructure.dart';
+import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
+import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
+import 'package:easy_orm_cli/util/command_line_tools.dart';
+import 'package:easy_orm_cli/util/internal_error.dart';
+import 'package:easy_orm_cli/util/version.dart';
+import 'package:easy_orm_postgres/dbConnection/getPostgresConnection.dart';
 
 const cmdGenerate = 'generate';
+const cmdCheck = 'check';
 const cmdVersion = 'version';
 
 // final runModes = <String>['development', 'staging', 'production'];
@@ -43,67 +47,92 @@ Future<void> _main(List<String> args) async {
   var versionParser = ArgParser();
   parser.addCommand(cmdVersion, versionParser);
 
+  // "check" command
+  var checkParser = ArgParser();
+  checkParser.addOption('host', help: 'host name', mandatory: true);
+  checkParser.addOption('port', help: 'port name', mandatory: true);
+  checkParser.addOption('db', help: 'database name', mandatory: true);
+  checkParser.addOption('username', abbr: 'u', help: 'username', mandatory: true);
+  checkParser.addOption('password', abbr: 'p', help: 'password', mandatory: true);
+  checkParser.addOption('schema', help: 'schema name', mandatory: true);
+  checkParser.addOption('package', help: 'package name', mandatory: true);
+  parser.addCommand(cmdCheck, checkParser);
+
   // "generate" command
   var generateParser = ArgParser();
-  generateParser.addOption('host', help: 'host name');
-  generateParser.addOption('port', help: 'port name');
-  generateParser.addOption('db', help: 'database name');
-  generateParser.addOption('username', abbr: 'u', help: 'username');
-  generateParser.addOption('password', abbr: 'p', help: 'password');
-  generateParser.addOption('schema', help: 'schema name');
-  generateParser.addOption('package', help: 'package name');
+  generateParser.addOption('host', help: 'host name', mandatory: true);
+  generateParser.addOption('port', help: 'port name', mandatory: true);
+  generateParser.addOption('db', help: 'database name', mandatory: true);
+  generateParser.addOption('username', abbr: 'u', help: 'username', mandatory: true);
+  generateParser.addOption('password', abbr: 'p', help: 'password', mandatory: true);
+  generateParser.addOption('schema', help: 'schema name', mandatory: true);
+  generateParser.addOption('package', help: 'package name', mandatory: true);
   parser.addCommand(cmdGenerate, generateParser);
 
-  ArgResults results;
+  ArgResults argResults;
   try {
-    results = parser.parse(args);
+    argResults = parser.parse(args);
   } catch (e) {
     _printUsage(parser);
     return;
   }
 
-  if (results.command != null) {
+  if (argResults.command != null) {
     // Version command.
-    if (results.command!.name == cmdVersion) {
+    if (argResults.command!.name == cmdVersion) {
       printVersion();
       return;
     }
 
+    // check
+    if (argResults.command!.name == cmdCheck) {
+      var cn = await getPostgresConnection(argResults);
+      var table_schema = argResults.command!['schema'];
+
+      checkFolderStructure();
+
+      try {
+        var tablesRaw = await getTablesRawFromDb(cn, table_schema);
+        var tables = convertRawTablesToTables(tablesRaw);
+        var result = tables.map((e) => e.name).join(", ");
+
+        print("tables to be created:");
+        print(result);
+      } on SocketException catch (e) {
+        if (e.osError?.errorCode == 61) {
+          print("connection refused, is db accessible?");
+        }
+        print("db connection error");
+        return;
+      }
+      return;
+    }
+
     // Generate command.
-    if (results.command!.name == cmdGenerate) {
-      String? host = results.command!['host'];
-      int? port = int.tryParse(results.command!['port']);
-      String? db = results.command!['db'];
-      String? username = results.command!['username'];
-      String? password = results.command!['password'];
-      String? schema = results.command!['schema'];
-      String? package = results.command!['package'];
+    if (argResults.command!.name == cmdGenerate) {
+      print('checking...');
 
-      if ([host, port, db, username, password, package].any((element) => element == null)) {
-        print("host, port, db, username, password and package are all required, see help");
+      if (!await checkFolderStructure()) //
         return;
-      }
 
-      if (!await Directory("lib").exists()) {
-        print('lib folder must exist');
-        print(Directory.current.path);
-        var dir = Directory.current;
-        var entities = await dir.list().toList();
-        print(entities.join(","));
-        print('lib folder must exist');
-        return;
-      }
+      var port = int.tryParse(argResults.command!['port']);
+      if (port == null) //
+        throw Exception("port needs to be an integer");
+
+      print('generating...');
 
       await performGenerate(
-        postgresConnection: await getPostgresConnection(
-          host: host!,
-          port: port!,
-          db: db!,
-          username: username!,
-          password: password!,
-        ),
-        packageName: package!,
-        table_schema: schema ?? "public",
+        postgresConnection: await getPostgresConnection(argResults),
+        packageName: argResults.command!['package'],
+        table_schema: argResults.command!['schema'],
+      );
+
+      print('building...');
+
+      Process.runSync(
+        'dart',
+        ['run', 'build_runner', 'build', '--delete-conflicting-outputs'],
+        workingDirectory: Directory.current.path,
       );
 
       print('Done.');
@@ -116,7 +145,7 @@ Future<void> _main(List<String> args) async {
 }
 
 void _printUsage(ArgParser parser) {
-  print('${Colorize('Usage:')..bold()} xyz <command> [arguments]\n');
+  print('${Colorize('Usage:')..bold()} easy_orm_cli <command> [arguments]\n');
   print('');
   print('${Colorize('COMMANDS')..bold()}');
   print('');
@@ -126,7 +155,7 @@ void _printUsage(ArgParser parser) {
   );
   _printCommandUsage(
     cmdGenerate,
-    'Generates the database code.',
+    'Generates the database code.  All arguments are mandatory. \neasy_orm_cli generate --host localhost --port 5433 --db postgres -u postgres -p postgres --schema public --package example',
     parser.commands[cmdGenerate]!,
   );
 }

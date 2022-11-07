@@ -1,7 +1,9 @@
-name: postgrest_cli
+name: easy_orm_cli
 description: The CLI used to generate ORM code for easy_orm.
-version: 0.2.0
-publish_to: none
+version: 0.3.0
+executables:
+  easy_orm_cli:
+repository: https://github.com/atreeon/easy_orm/
 
 environment:
   sdk: '>=2.17.3 <3.0.0'
@@ -9,10 +11,9 @@ environment:
 dependencies:
   super_string: ^1.0.3
   colorize: ^3.0.0
-  easy_orm_engine:
-    path: ../easy_orm_engine
-  templater_atreeon:
-    git: https://github.com/atreeon/templater_atreeon.git
+  easy_orm_postgres:
+    path: ../easy_orm_postgres
+  templater_atreeon: ^1.0.0
   basic_utils: ^5.3.0
   postgres: ^2.5.0
   collection: ^1.16.0

@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Check out app and get dependencies
-        working-directory: ./easy_orm_engine
+        working-directory: ./easy_orm_postgres
         run:  |
           dart pub get
 
@@ -62,7 +62,7 @@ jobs:
           psql -U postgres -d postgres -h postgres -p 5432 -a -f resources/northwind.sql
 
       - name: Run tests engine
-        working-directory: ./easy_orm_engine
+        working-directory: ./easy_orm_postgres
         run: dart run test
         env:
           TEST_DB_CONFIG: ciserver_test_db.yaml

@@ -1,5 +1,5 @@
 name: example
-description: examples of postgrest_typed
+description: examples of easy_orm
 publish_to: none
 
 environment:
@@ -8,8 +8,8 @@ environment:
 dependencies:
   freezed_annotation: ^2.1.0
   json_annotation: ^4.7.0
-  easy_orm_engine:
-    path: ../easy_orm_engine
+  easy_orm_postgres:
+    path: ../easy_orm_postgres
   postgres: ^2.5.0
 
 dev_dependencies:
