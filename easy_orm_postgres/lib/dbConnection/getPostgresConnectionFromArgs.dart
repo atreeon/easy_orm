@@ -1,7 +1,7 @@
 import 'package:args/args.dart';
 import 'package:postgres/postgres.dart';
 
-Future<PostgreSQLConnection> getPostgresConnection(ArgResults argResults) async {
+Future<PostgreSQLConnection> getPostgresConnectionFromArgs(ArgResults argResults) async {
   var port = int.tryParse(argResults.command!['port']);
   if (port == null) //
     throw Exception("port needs to be an integer");

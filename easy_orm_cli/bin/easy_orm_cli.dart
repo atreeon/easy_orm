@@ -10,7 +10,7 @@ import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
 import 'package:easy_orm_cli/util/command_line_tools.dart';
 import 'package:easy_orm_cli/util/internal_error.dart';
 import 'package:easy_orm_cli/util/version.dart';
-import 'package:easy_orm_postgres/dbConnection/getPostgresConnection.dart';
+import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromArgs.dart';
 
 const cmdGenerate = 'generate';
 const cmdCheck = 'check';
@@ -86,7 +86,7 @@ Future<void> _main(List<String> args) async {
 
     // check
     if (argResults.command!.name == cmdCheck) {
-      var cn = await getPostgresConnection(argResults);
+      var cn = await getPostgresConnectionFromArgs(argResults);
       var table_schema = argResults.command!['schema'];
 
       checkFolderStructure();
@@ -122,18 +122,21 @@ Future<void> _main(List<String> args) async {
       print('generating...');
 
       await performGenerate(
-        postgresConnection: await getPostgresConnection(argResults),
+        postgresConnection: await getPostgresConnectionFromArgs(argResults),
         packageName: argResults.command!['package'],
         table_schema: argResults.command!['schema'],
       );
 
       print('building...');
 
-      Process.runSync(
+      var result = await Process.runSync(
         'dart',
         ['run', 'build_runner', 'build', '--delete-conflicting-outputs'],
         workingDirectory: Directory.current.path,
       );
+
+      print(result.stderr.toString());
+      print(result.stdout.toString());
 
       print('Done.');
 

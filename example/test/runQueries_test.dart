@@ -164,6 +164,19 @@ void main() {
       expect((result as SqlResponse_Success<List<Tuple2<String, String?>>>).result.toList(), expected);
     });
 
+    test("5a us - select *", () async {
+      var connection = await getPostgresConnectionFromConfig();
+
+      var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
+          .selectQuery(
+        where: ((e) => Where(e.state_name.like("%ia"))),
+      );
+
+      var expected = 6;
+      var resultCount = (result as SqlResponse_Success<List<Us_state>>).result.length;
+      expect(resultCount, expected);
+    });
+
     //todo: joins
     // test("4a inner join", () async {
     //   var connection = await getPostgresConnectionFromConfig();
