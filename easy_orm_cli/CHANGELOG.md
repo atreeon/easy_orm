@@ -1,3 +1,8 @@
-## 0.1.0
+## 0.3.3
+- Pointless rename!
 
+## 0.3.1
+- Building didn't await the results
+
+## 0.3.0
 - Initial version.

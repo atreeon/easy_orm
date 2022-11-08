@@ -1,6 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
-import 'package:postgrest_cli/helpers/lookupDbType.dart';
-import 'package:postgrest_cli/util/dePluralise.dart';
+import 'package:easy_orm_cli/helpers/lookupDbType.dart';
+import 'package:easy_orm_cli/util/dePluralise.dart';
 
 import 'Table.dart';
 

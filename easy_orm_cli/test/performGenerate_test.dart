@@ -1,7 +1,7 @@
 @Tags(['integration'])
 
-import 'package:easy_orm_engine/dbConnection/getPostgresConnectionFromConfig.dart';
-import 'package:postgrest_cli/generator.dart';
+import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
+import 'package:easy_orm_cli/generator.dart';
 import 'package:test/test.dart';
 
 import 'expectedResults/expectedFiles.dart';

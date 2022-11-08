@@ -1,6 +1,6 @@
 var expectedService = """import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
-import 'package:easy_orm_engine/service/IService.dart';
+import 'package:easy_orm_postgres/service/IService.dart';
 import 'package:postgres/postgres.dart';
 
 class Us_statesService extends IService<Us_statesDefinition, Us_state> {
@@ -12,8 +12,8 @@ class Us_statesService extends IService<Us_statesDefinition, Us_state> {
 """;
 
 var expectedDefinition = """// ignore_for_file: unused_import
-import 'package:easy_orm_engine/column.dart';
-import 'package:easy_orm_engine/ITableDefinition.dart';
+import 'package:easy_orm_postgres/column.dart';
+import 'package:easy_orm_postgres/ITableDefinition.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
 import 'dart:typed_data';
 
