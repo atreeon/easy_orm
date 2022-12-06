@@ -2,7 +2,7 @@ import 'package:easy_orm_postgres/clauseObjects/Where.dart';
 import 'package:easy_orm_postgres/service/getWhere.dart';
 import 'package:test/test.dart';
 
-import 'generated/EmployeesDefinition.dart';
+import '../generated/EmployeesDefinition.dart';
 
 void main() {
   group('where', () {

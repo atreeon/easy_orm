@@ -1,16 +1,16 @@
-import 'package:easy_orm_cli/helpers/lookupDbType.dart';
-
-import '../../util/linqH.dart';
-import 'Column.dart';
-import 'Table.dart';
+import 'package:easy_orm_cli/helpers/Column.dart';
+import 'package:easy_orm_cli/helpers/Table.dart';
+import 'package:easy_orm_cli/util/linqH.dart';
 
 ///convert the db result to a list of Tables & Columns
-List<Table> convertRawTablesToTables(List<Map<String, Map<String, dynamic>>> rawDbTables) {
+List<Table> convertRawTablesToTables(
+  List<Map<String, Map<String, dynamic>>> rawDbTables,
+) {
   var rawDbTables2 = rawDbTables.map((e) {
     return e[e.keys.first]!;
   }).toList();
 
-  var result = groupBy<Map<String, dynamic>, String>(
+  var tables = groupBy<Map<String, dynamic>, String>(
     rawDbTables2,
     by: (val) => val["table_name"],
   ).map((e) {
@@ -25,10 +25,9 @@ List<Table> convertRawTablesToTables(List<Map<String, Map<String, dynamic>>> raw
               isIdentity: x["is_identity"] == "YES" ? true : false,
             ),
           )
-          .where((c) => !unsupportedColumnTypes.any((unsupportedType) => c.dbType == unsupportedType))
           .toList(),
     );
   }).toList();
 
-  return result;
+  return tables;
 }

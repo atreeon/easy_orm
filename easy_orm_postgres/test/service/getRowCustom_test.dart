@@ -2,8 +2,8 @@ import 'package:easy_orm_postgres/service/getRowCustom.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
 
-import 'generated/Territorie.dart';
-import 'generated/TerritoriesDefinition.dart';
+import '../generated/Territorie.dart';
+import '../generated/TerritoriesDefinition.dart';
 
 void main() {
   group('getRowCustom', () {

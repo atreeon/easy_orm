@@ -4,9 +4,11 @@ import 'package:easy_orm_postgres/clauseObjects/Where.dart';
 import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
 import 'package:easy_orm_postgres/service/EasyOrm.dart';
 import 'package:easy_orm_postgres/service/SqlResponse.dart';
+import 'package:example/generatedDb/db/Db.dart';
 import 'package:example/generatedDb/definitions/EmployeesDefinition.dart';
 import 'package:example/generatedDb/definitions/TerritoriesDefinition.dart';
 import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';
+import 'package:example/generatedDb/models/Categorie.dart';
 import 'package:example/generatedDb/models/Employee.dart';
 import 'package:example/generatedDb/models/Territorie.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
@@ -14,6 +16,65 @@ import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
 
 void main() {
+  group("readme examples", () {
+    test("1x us_states like %iana", () async {
+      var result = await Db().us_states.selectQuery(
+            where: ((e) => Where(e.state_name.like("%iana"))),
+          );
+
+      var expected = [15, 19];
+      var resultFormatted = (result as SqlResponse_Success<List<Us_state>>).result.map((x) => x.state_id).toList();
+      expect(resultFormatted, expected);
+    });
+
+    test("2x us_states like %ia", () async {
+      var result = await Db().us_states.selectQuery(
+            where: ((e) => Where(e.state_name.like("%ia"))),
+          );
+
+      var expected = [5, 9, 11, 39, 47, 49];
+      var resultFormatted = (result as SqlResponse_Success<List<Us_state>>).result.map((x) => x.state_id).toList();
+      expect(resultFormatted, expected);
+    });
+  });
+
+  group("sql vs easy_orm examples", () {
+    test("1y select *", () async {
+      var result = await Db().categories.selectQuery();
+      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
+      expect(resultFormatted, 8);
+    });
+
+    test("1y select * greater than", () async {
+      var result = await Db().products.selectQuery(
+            where: (x) => Where(x.unit_price.gt(10)),
+          );
+
+      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
+      expect(resultFormatted, 8);
+    });
+
+    test("1y select 2 columns", () async {
+      var result = await Db().products.selectQuery2Cols(
+            ((e) => e.supplier_id),
+            ((e) => e.category_id),
+          );
+
+      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
+      expect(resultFormatted, 8);
+    });
+
+    test("1y distinct", () async {
+      var result = await Db().products.selectQuery1Col(
+        ((e) => e.supplier_id),
+      );
+      var supplierIds = (result as SqlResponse_Success<List<int?>>).result;
+      supplierIds.toSet();
+
+      expect(supplierIds.length, 77);
+    });
+  });
+
   group("insert", () {
     tearDown(() async {
       var connection = await getPostgresConnectionFromConfig();
@@ -28,12 +89,13 @@ void main() {
       await connection.open();
       late SqlResponse<List<Us_state>>? sqlResponse;
       await connection.transaction((ctx) async {
-        var data = await EasyOrm<Us_state, Us_statesDefinition>(ctx, Us_statesDefinition()) //
+        var data = await EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition()) //
             .insertRecords(
           [
             Us_state(state_id: 0, state_abbr: "ab", state_name: "name1", state_region: "region1"),
             Us_state(state_id: 0, state_abbr: "ac", state_name: "name2", state_region: "region2"),
           ],
+          cn: ctx,
         );
         sqlResponse = data;
         ctx.cancelTransaction();
@@ -50,12 +112,13 @@ void main() {
       await connection.open();
       late SqlResponse<List<Territorie>>? sqlResponse;
       await connection.transaction((ctx) async {
-        var data = await EasyOrm<Territorie, TerritoriesDefinition>(ctx, TerritoriesDefinition()) //
+        var data = await EasyOrm<Territorie, TerritoriesDefinition>(TerritoriesDefinition()) //
             .insertRecords(
           [
             Territorie(territory_description: "desc1", region_id: 1, territory_id: "abc1"),
             Territorie(territory_description: "desc2", region_id: 2, territory_id: "abc2"),
           ],
+          cn: ctx,
         );
         sqlResponse = data;
         ctx.cancelTransaction();
@@ -70,9 +133,7 @@ void main() {
 
   group("run Select Queries", () {
     test("1a us - select *", () async {
-      var connection = await getPostgresConnectionFromConfig();
-
-      var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
+      var result = await EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition()) //
           .selectQuery(
         where: ((e) => Where(
               Brackets(
@@ -91,9 +152,7 @@ void main() {
     });
 
     test("2a us", () async {
-      var connection = await getPostgresConnectionFromConfig();
-
-      var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
+      var result = await EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition()) //
           .selectQuery2Cols(
         (e) => e.state_id,
         (e) => e.state_name,
@@ -115,9 +174,7 @@ void main() {
     });
 
     test("3a employees", () async {
-      var connection = await getPostgresConnectionFromConfig();
-
-      var result = await EasyOrm<Employee, EmployeesDefinition>(connection, EmployeesDefinition()) //
+      var result = await EasyOrm<Employee, EmployeesDefinition>(EmployeesDefinition()) //
           .selectQuery(
         where: ((e) => Where(
               Brackets(
@@ -137,9 +194,7 @@ void main() {
     });
 
     test("4a employees", () async {
-      var connection = await getPostgresConnectionFromConfig();
-
-      var result = await EasyOrm<Employee, EmployeesDefinition>(connection, EmployeesDefinition()) //
+      var result = await EasyOrm<Employee, EmployeesDefinition>(EmployeesDefinition()) //
           .selectQuery2Cols(
         (e) => e.last_name,
         (e) => e.title,
@@ -165,16 +220,40 @@ void main() {
     });
 
     test("5a us - select *", () async {
-      var connection = await getPostgresConnectionFromConfig();
+      var usStatesDef = EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition());
 
-      var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
-          .selectQuery(
+      var result = await usStatesDef.selectQuery(
         where: ((e) => Where(e.state_name.like("%ia"))),
       );
 
       var expected = 6;
       var resultCount = (result as SqlResponse_Success<List<Us_state>>).result.length;
       expect(resultCount, expected);
+    });
+
+    test("6a select all columns & rows (no selection criteria)", () async {
+      var usStatesDef = EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition());
+
+      var result = await usStatesDef.selectQuery();
+
+      var expected = 51;
+      var resultCount = (result as SqlResponse_Success<List<Us_state>>).result.length;
+      expect(resultCount, expected);
+    });
+
+    test("7a simple select using db", () async {
+      var result = await Db().us_states.selectQuery(
+            where: ((e) => Where(
+                  e.state_name.like("%iana"),
+                )),
+            orderBy: ((e) => OrderBy([
+                  OrderByItem(e.state_region),
+                ])),
+          );
+
+      var expected = [15, 19];
+      var resultFormatted = (result as SqlResponse_Success<List<Us_state>>).result.map((x) => x.state_id).toList();
+      expect(resultFormatted, expected);
     });
 
     //todo: joins
@@ -218,7 +297,7 @@ void main() {
       await connection.open();
       late SqlResponse<List<Us_state>> result;
       await connection.transaction((ctx) async {
-        var data = await EasyOrm<Us_state, Us_statesDefinition>(ctx, Us_statesDefinition()) //
+        var data = await EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition()) //
             .updateRecords(
           where: (e) => Where(
             e.state_id.eq(2),
@@ -228,6 +307,7 @@ void main() {
               e.state_name: "Alaskakakakaaaa",
             },
           ),
+          cn: ctx,
         );
         result = data;
         ctx.cancelTransaction();
@@ -258,13 +338,16 @@ void main() {
       var connection = await getPostgresConnectionFromConfig();
       await connection.open();
       late SqlResponse<int> result;
+
       await connection.transaction((ctx) async {
-        var data = await EasyOrm<Us_state, Us_statesDefinition>(ctx, Us_statesDefinition()) //
+        var data = await Db()
+            .us_states //
             .deleteRecords(
-          (e) => Where(
-            e.state_id.eq(2),
-          ),
-        );
+              (e) => Where(
+                e.state_id.eq(2),
+              ),
+              cn: ctx,
+            );
         result = data;
         ctx.cancelTransaction();
       });

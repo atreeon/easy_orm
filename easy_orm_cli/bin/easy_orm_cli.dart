@@ -6,6 +6,7 @@ import 'package:colorize/colorize.dart';
 import 'package:easy_orm_cli/generator.dart';
 import 'package:easy_orm_cli/helpers/checkFolderStructure.dart';
 import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
+import 'package:easy_orm_cli/helpers/filterTables.dart';
 import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
 import 'package:easy_orm_cli/util/command_line_tools.dart';
 import 'package:easy_orm_cli/util/internal_error.dart';
@@ -93,8 +94,9 @@ Future<void> _main(List<String> args) async {
 
       try {
         var tablesRaw = await getTablesRawFromDb(cn, table_schema);
-        var tables = convertRawTablesToTables(tablesRaw);
-        var result = tables.map((e) => e.name).join(", ");
+        var tables1 = convertRawTablesToTables(tablesRaw);
+        var tables = await filterTables(tables1);
+        var result = tables.map((e) => e.tableName).join(", ");
 
         print("tables to be created:");
         print(result);
@@ -127,7 +129,7 @@ Future<void> _main(List<String> args) async {
         table_schema: argResults.command!['schema'],
       );
 
-      print('building...');
+      print('building freezed models...');
 
       var result = await Process.runSync(
         'dart',
@@ -139,6 +141,8 @@ Future<void> _main(List<String> args) async {
       print(result.stdout.toString());
 
       print('Done.');
+
+      await Future.delayed(Duration(seconds: 2));
 
       return;
     }

@@ -1,5 +1,5 @@
-import 'package:postgres/postgres.dart';
 import 'package:easy_orm_postgres/dbConnection/getDbConnectionValuesFromConfig.dart';
+import 'package:postgres/postgres.dart';
 
 Future<PostgreSQLConnection> getPostgresConnectionFromConfig() async {
   var cnValues = await getDbConnectionValuesFromConfig();
