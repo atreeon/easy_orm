@@ -2,6 +2,7 @@ var definition_template = """--inputs: className, tableName, columns as List<Col
 // ignore_for_file: unused_import
 import 'package:easy_orm_postgres/column.dart';
 import 'package:easy_orm_postgres/ITableDefinition.dart';
+import 'package:easy_orm_postgres/service/getTypeFromDbRow.dart';
 import 'package:%%%packageName%%%/generatedDb/models/%%%modelName%%%.dart';
 import 'dart:typed_data';
 

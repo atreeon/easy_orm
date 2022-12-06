@@ -2,6 +2,6 @@
 
 export PGPASSWORD='postgres'; psql -U postgres -d postgres -h localhost -p 5433 -a -f resources/northwind.sql
 
-./script1GenerateCode.sh
+./scripts/./script1GenerateCodeForExampleProject.sh
 
-./script3RunAllTestsLocallyAndPubGet.sh
+./scripts/./script3RunAllTestsLocallyAndPubGet.sh

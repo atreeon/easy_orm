@@ -167,8 +167,9 @@ void main() {
     test("5a us - select *", () async {
       var connection = await getPostgresConnectionFromConfig();
 
-      var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
-          .selectQuery(
+      var usStatesDef = EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition());
+
+      var result = await usStatesDef.selectQuery(
         where: ((e) => Where(e.state_name.like("%ia"))),
       );
 

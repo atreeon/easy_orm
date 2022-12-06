@@ -3,6 +3,9 @@
 ## What is Easy ORM Postgresql?
 Easy ORM is an easy way to use your postgres database and map Dart objects to sql and sql results to Dart objects.  
 
+Everything is strongly typed (data returned, queries, inserts etc) and your database models are created for you. 
+I don't think I'm wrong in saying that Easy ORM is the only ORM for postgresql that works and achieves this.
+
 ORM stands for Object Relational Mapper https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping.  Other popular ORMs for other languages include SQLAlchemy & Entity Framework.  
 
 Easy ORM is, currently and hopefully, a low functionality version of these ORMS that supports basic insert, update, select and delete statements.  Where clauses support nested and simple 'and', 'or' statements.  The intention is to use sql rarely and when it is used to use stored procedures or views through this ORM (supported from v0.4.0).
@@ -43,10 +46,11 @@ dart pub add easy_orm_postgres
 `easy_orm_cli generate --host localhost --port 5433 --db postgres -u postgres -p postgres --schema public --package example`
 4. Create a postgresql connection   
 `var connection = PostgreSQLConnection('localhost', 5433, 'postgres', username: 'postgres', password: 'postgres');`
-5. Add a simple select query
+5. Add a simple select query (define definition with connection object, then query)
 ```
-  var result = await EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition()) //
-      .selectQuery(
+  var usStatesDef = EasyOrm<Us_state, Us_statesDefinition>(connection, Us_statesDefinition());
+
+  var result = await usStatesDef.selectQuery(
     where: ((e) => Where(e.state_name.like("%ia"))),
   );
 ```
