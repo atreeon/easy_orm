@@ -2,7 +2,7 @@ import 'package:easy_orm_postgres/clauseObjects/Update.dart';
 import 'package:easy_orm_postgres/service/getUpdate.dart';
 import 'package:test/test.dart';
 
-import 'generated/EmployeesDefinition.dart';
+import '../generated/EmployeesDefinition.dart';
 
 void main() {
   group('update', () {

@@ -1,10 +1,10 @@
 import 'package:easy_orm_postgres/service/getInsert.dart';
 import 'package:test/test.dart';
 
-import 'generated/Employee.dart';
-import 'generated/EmployeesDefinition.dart';
-import 'generated/Territorie.dart';
-import 'generated/TerritoriesDefinition.dart';
+import '../generated/Employee.dart';
+import '../generated/EmployeesDefinition.dart';
+import '../generated/Territorie.dart';
+import '../generated/TerritoriesDefinition.dart';
 
 void main() {
   group('insert', () {

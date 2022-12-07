@@ -14,6 +14,7 @@ class Us_statesService extends IService<Us_statesDefinition, Us_state> {
 var expectedDefinition = """// ignore_for_file: unused_import
 import 'package:easy_orm_postgres/column.dart';
 import 'package:easy_orm_postgres/ITableDefinition.dart';
+import 'package:easy_orm_postgres/service/getTypeFromDbRow.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
 import 'dart:typed_data';
 
@@ -62,10 +63,10 @@ class Us_statesDefinition implements ITableDefinition<Us_state> {
 
   Us_state getTypeFromRow(Map<String, Map<String, dynamic>> row) {
     return Us_state(
-state_id: row[this.tableName]![this.state_id.name],
-state_abbr: row[this.tableName]![this.state_abbr.name],
-state_name: row[this.tableName]![this.state_name.name],
-state_region: row[this.tableName]![this.state_region.name],
+state_id: getTypeFromDbRow(this.tableName, this.state_id, row),
+state_abbr: getTypeFromDbRow(this.tableName, this.state_abbr, row),
+state_name: getTypeFromDbRow(this.tableName, this.state_name, row),
+state_region: getTypeFromDbRow(this.tableName, this.state_region, row),
 
     );
   }

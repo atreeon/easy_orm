@@ -2,7 +2,7 @@ import 'package:easy_orm_postgres/clauseObjects/OrderBy.dart';
 import 'package:easy_orm_postgres/service/getOrderBy.dart';
 import 'package:test/test.dart';
 
-import 'generated/EmployeesDefinition.dart';
+import '../generated/EmployeesDefinition.dart';
 
 void main() {
   group('orderBy', () {

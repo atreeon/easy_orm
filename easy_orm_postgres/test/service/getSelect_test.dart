@@ -1,8 +1,8 @@
 import 'package:easy_orm_postgres/service/getSelect.dart';
 import 'package:test/test.dart';
 
-import 'generated/EmployeesDefinition.dart';
-import 'generated/TerritoriesDefinition.dart';
+import '../generated/EmployeesDefinition.dart';
+import '../generated/TerritoriesDefinition.dart';
 
 void main() {
   group('select', () {
