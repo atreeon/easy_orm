@@ -3,9 +3,9 @@ import 'package:easy_orm_cli/generator.dart';
 import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
 import 'package:test/test.dart';
 
-import 'expectedResults/expectedDb.dart';
-import 'expectedResults/expectedDefinition.dart';
-import 'expectedResults/expectedModel.dart';
+import 'helpers/convert_expectedResults/expectedDb.dart';
+import 'helpers/convert_expectedResults/expectedDefinition.dart';
+import 'helpers/convert_expectedResults/expectedModel.dart';
 
 void main() {
   Future<List<String>> _performGenerate() async {

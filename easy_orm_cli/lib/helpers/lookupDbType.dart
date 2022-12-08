@@ -8,7 +8,41 @@ String lookupDbType(String dbType, Map<String, String> lookup) {
   return result;
 }
 
-var unsupportedColumnTypes = ["bytea"];
+List<String> getSupportedDataTypes(){
+  return convertDbTypeToDartType.keys.toList();
+}
+
+// var unsupportedColumnTypes = [
+//   "bit",
+//   "varbit",
+//   "box",
+//   "bytea",
+//   "cidr",
+//   "circle",
+//   "inet",
+//   "bytea",
+//   "interval",
+//   "json",
+//   "jsonb",
+//   "line",
+//   "lseg",
+//   "macaddr",
+//   "macaddr8",
+//   "path",
+//   "pg_lsn",
+//   "pg_snapshot",
+//   "point",
+//   "polygon",
+//   "time",
+//   "timez",
+//   "timestamp",
+//   "timestampz",
+//   "tsquery",
+//   "tsvector",
+//   "txid_snapshot",
+//   "uuid",
+//   "xml",
+// ];
 
 var convertDbTypeToDartType = {
   "int2": "int",

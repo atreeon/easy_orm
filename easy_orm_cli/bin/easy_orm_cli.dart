@@ -7,6 +7,7 @@ import 'package:easy_orm_cli/generator.dart';
 import 'package:easy_orm_cli/helpers/checkFolderStructure.dart';
 import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
 import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
+import 'package:easy_orm_cli/helpers/processExcludeListYaml.dart';
 import 'package:easy_orm_cli/util/command_line_tools.dart';
 import 'package:easy_orm_cli/util/internal_error.dart';
 import 'package:easy_orm_cli/util/version.dart';
@@ -93,7 +94,12 @@ Future<void> _main(List<String> args) async {
 
       try {
         var tablesRaw = await getTablesRawFromDb(cn, table_schema);
-        var tables = convertRawTablesToTables(tablesRaw);
+        Map<String, List<String>?>? excludeList = null;
+        if (await File('config/excludeList.yaml').exists()) {
+          var excludeListString = await File('config/excludeList.yaml').readAsString();
+          excludeList = processExcludeListYaml(excludeListString);
+        }
+        var tables = convertRawTablesToTables(tablesRaw, excludeList);
         var result = tables.map((e) => e.tableName).join(", ");
 
         print("tables to be created:");

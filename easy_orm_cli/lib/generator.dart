@@ -4,6 +4,7 @@ import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToDbMap.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToTemplateMap.dart';
 import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
+import 'package:easy_orm_cli/helpers/processExcludeListYaml.dart';
 import 'package:easy_orm_cli/templates/column_subTemplate.dart';
 import 'package:easy_orm_cli/templates/db_importStatement_template.dart';
 import 'package:easy_orm_cli/templates/db_tableName_template.dart';
@@ -39,13 +40,21 @@ Future<List<String>> performGenerate({
     await Directory("lib/generatedDb/db").create();
   }
 
+  //load excludeList.yaml
+
+  Map<String, List<String>?>? excludeList = null;
+  if (await File('config/excludeList.yaml').exists()) {
+    var excludeListString = await File('config/excludeList.yaml').readAsString();
+    excludeList = processExcludeListYaml(excludeListString);
+  }
+
   // if (!await Directory("lib/generatedDb/services").exists()) {
   //   await Directory("lib/generatedDb/services").create();
   // }
 
   //get the list of tables from the db
   var tablesRaw = await getTablesRawFromDb(postgresConnection, table_schema);
-  var tables = convertRawTablesToTables(tablesRaw);
+  var tables = convertRawTablesToTables(tablesRaw, excludeList);
 
   //get maps for each template
   //We've removed service file from the generated output files
