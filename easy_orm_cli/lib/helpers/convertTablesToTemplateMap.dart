@@ -1,6 +1,4 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:easy_orm_cli/helpers/lookupDbType.dart';
-import 'package:easy_orm_cli/util/dePluralise.dart';
 
 import 'Table.dart';
 
@@ -15,21 +13,21 @@ Map<String, Map<String, dynamic>> convertTablesToTemplateMap(
       getFilename(table): //
           {
         "packageName": packageName,
-        "name": StringUtils.capitalize(table.name),
-        "tableName": table.name,
+        "definitionName": table.definitionName,
+        "tableName": table.tableName,
         "columns": table.columns
             .map((column) => {
                   "dbType": column.dbType,
                   "dartType": lookupDbType(column.dbType, convertDbTypeToDartType) + (column.nullable ? "?" : ""),
                   "columnName": column.columnName,
                   "nullable": column.nullable.toString(),
-                  "tableName": table.name,
+                  "tableName": table.tableName,
                   "columnType": (column.nullable ? "Nullable" : "") + lookupDbType(column.dbType, convertDbTypeToColumnType),
-                  "modelName": dePluralise(StringUtils.capitalize(table.name)),
+                  "modelName": table.modelName,
                   "isIdentity": column.isIdentity.toString(),
                 })
             .toList(),
-        "modelName": dePluralise(StringUtils.capitalize(table.name)),
+        "modelName": table.modelName,
         "propertySetColumns": table.columns //
             .map((column) => {"columnName": column.columnName})
             .toList(),

@@ -1,8 +1,9 @@
 var db_template = """
-~~~modelNames|importStatementTemplate~~~
-~~~definitionNames|importStatementTemplate~~~
+import 'package:easy_orm_postgres/service/EasyOrm.dart';
+~~~models|importStatementTemplate~~~
+~~~definitions|importStatementTemplate~~~
 
-class db {
-~~~tableNames|tableNameTemplate~~~
+class Db {
+~~~tables|tableNameTemplate~~~
 }
 """;

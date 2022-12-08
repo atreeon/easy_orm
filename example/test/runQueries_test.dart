@@ -4,6 +4,7 @@ import 'package:easy_orm_postgres/clauseObjects/Where.dart';
 import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
 import 'package:easy_orm_postgres/service/EasyOrm.dart';
 import 'package:easy_orm_postgres/service/SqlResponse.dart';
+import 'package:example/generatedDb/db/db.dart';
 import 'package:example/generatedDb/definitions/EmployeesDefinition.dart';
 import 'package:example/generatedDb/definitions/TerritoriesDefinition.dart';
 import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';
@@ -180,6 +181,21 @@ void main() {
       expect(resultCount, expected);
     });
 
+    test("7a simple select using db", () async {
+      var result = await Db().us_states.selectQuery(
+            where: ((e) => Where(
+                  e.state_name.like("%iana"),
+                )),
+            orderBy: ((e) => OrderBy([
+                  OrderByItem(e.state_region),
+                ])),
+          );
+
+      var expected = [15, 19];
+      var resultFormatted = (result as SqlResponse_Success<List<Us_state>>).result.map((x) => x.state_id).toList();
+      expect(resultFormatted, expected);
+    });
+
     //todo: joins
     // test("4a inner join", () async {
     //   var connection = await getPostgresConnectionFromConfig();
@@ -263,17 +279,15 @@ void main() {
       await connection.open();
       late SqlResponse<int> result;
 
-      var db_ = db();
-      db_.territories.selectQuery();
-
       await connection.transaction((ctx) async {
-        var data = await EasyOrm<Us_state, Us_statesDefinition>(Us_statesDefinition()) //
+        var data = await Db()
+            .us_states //
             .deleteRecords(
-          (e) => Where(
-            e.state_id.eq(2),
-          ),
-          cn: ctx,
-        );
+              (e) => Where(
+                e.state_id.eq(2),
+              ),
+              cn: ctx,
+            );
         result = data;
         ctx.cancelTransaction();
       });
@@ -285,8 +299,4 @@ void main() {
       expect(resultFormatted.result, expected);
     });
   });
-}
-
-class db {
-  EasyOrm<Territorie, TerritoriesDefinition> territories = EasyOrm<Territorie, TerritoriesDefinition>(TerritoriesDefinition());
 }

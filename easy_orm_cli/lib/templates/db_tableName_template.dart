@@ -1,2 +1,2 @@
-var db_table_template = """EasyOrm<%%%type%%%, %%%definition%%%> %%%name%%% = EasyOrm<%%%type%%%, %%%definition%%%>(%%%definition%%%());
+var db_table_template = """EasyOrm<%%%modelName%%%, %%%definitionName%%%> %%%variableName%%% = EasyOrm<%%%modelName%%%, %%%definitionName%%%>(%%%definitionName%%%());
 """;

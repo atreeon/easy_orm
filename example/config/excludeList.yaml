@@ -1,0 +1,8 @@
+#the tables specified here are excluded, must have no tabs / spaces / whitespace before name
+customer_customer_demo
+customer_demographics
+
+#the columns specified include the table name & column name indended by 2 chars
+# on the next line
+employees
+  photo_path

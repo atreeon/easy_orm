@@ -94,7 +94,7 @@ Future<void> _main(List<String> args) async {
       try {
         var tablesRaw = await getTablesRawFromDb(cn, table_schema);
         var tables = convertRawTablesToTables(tablesRaw);
-        var result = tables.map((e) => e.name).join(", ");
+        var result = tables.map((e) => e.tableName).join(", ");
 
         print("tables to be created:");
         print(result);
@@ -127,7 +127,7 @@ Future<void> _main(List<String> args) async {
         table_schema: argResults.command!['schema'],
       );
 
-      print('building...');
+      print('building freezed models...');
 
       var result = await Process.runSync(
         'dart',
@@ -139,6 +139,8 @@ Future<void> _main(List<String> args) async {
       print(result.stdout.toString());
 
       print('Done.');
+
+      await Future.delayed(Duration(seconds: 2));
 
       return;
     }

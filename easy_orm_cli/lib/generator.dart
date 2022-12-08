@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:basic_utils/basic_utils.dart';
 import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToDbMap.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToTemplateMap.dart';
@@ -13,7 +12,6 @@ import 'package:easy_orm_cli/templates/definition_template.dart';
 import 'package:easy_orm_cli/templates/modelParameters_subTemplate.dart';
 import 'package:easy_orm_cli/templates/model_template.dart';
 import 'package:easy_orm_cli/templates/propertySet_subTemplate.dart';
-import 'package:easy_orm_cli/util/dePluralise.dart';
 import 'package:postgres/postgres.dart';
 import 'package:templater_atreeon/templater_atreeon.dart';
 
@@ -52,8 +50,8 @@ Future<List<String>> performGenerate({
   //get maps for each template
   //We've removed service file from the generated output files
   // var serviceMap = convertTablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Service.dart");
-  var definitionMap = convertTablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Definition.dart");
-  var modelMap = convertTablesToTemplateMap(tables, packageName, (x) => dePluralise(StringUtils.capitalize(x.name)) + ".dart");
+  var definitionMap = convertTablesToTemplateMap(tables, packageName, (x) => x.definitionName + ".dart");
+  var modelMap = convertTablesToTemplateMap(tables, packageName, (x) => x.modelName + ".dart");
   var dbMap = convertTablesToDbMap(tables, packageName);
 
   // //process service template

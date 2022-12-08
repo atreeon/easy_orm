@@ -6,7 +6,7 @@ import 'package:easy_orm_postgres/service/getTypeFromDbRow.dart';
 import 'package:%%%packageName%%%/generatedDb/models/%%%modelName%%%.dart';
 import 'dart:typed_data';
 
-class %%%name%%%Definition implements ITableDefinition<%%%modelName%%%> {
+class %%%definitionName%%% implements ITableDefinition<%%%modelName%%%> {
   final String tableName = "%%%tableName%%%";
 
 ~~~columns|column_subTemplate~~~
