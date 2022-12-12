@@ -8,30 +8,72 @@ String lookupDbType(String dbType, Map<String, String> lookup) {
   return result;
 }
 
-var unsupportedColumnTypes = ["bytea"];
+List<String> getSupportedDataTypes(){
+  return convertDbTypeToDartType.keys.toList();
+}
+
+// var unsupportedColumnTypes = [
+//   "bit",
+//   "varbit",
+//   "box",
+//   "bytea",
+//   "cidr",
+//   "circle",
+//   "inet",
+//   "bytea",
+//   "interval",
+//   "json",
+//   "jsonb",
+//   "line",
+//   "lseg",
+//   "macaddr",
+//   "macaddr8",
+//   "path",
+//   "pg_lsn",
+//   "pg_snapshot",
+//   "point",
+//   "polygon",
+//   "time",
+//   "timez",
+//   "timestamp",
+//   "timestampz",
+//   "tsquery",
+//   "tsvector",
+//   "txid_snapshot",
+//   "uuid",
+//   "xml",
+// ];
 
 var convertDbTypeToDartType = {
   "int2": "int",
   "int4": "int",
+  "int8": "int",
+  "numeric": "double",
+  "float4": "double",
+  "float8": "double",
+  "serial2": "double",
+  "serial4": "double",
+  "serial8": "double",
   "bool": "bool",
   "bpchar": "String",
-  // "bytea": "Uint8List",
-  "date": "DateTime",
-  "text": "String",
   "varchar": "String",
-  "float4": "double",
-  "numeric": "double",
+  "text": "String",
+  "date": "DateTime",
 };
 
 var convertDbTypeToColumnType = {
   "int2": "Numeric",
   "int4": "Numeric",
+  "int8": "Numeric",
+  "numeric": "Numeric",
+  "float4": "Numeric",
+  "float8": "Numeric",
+  "serial2": "Numeric",
+  "serial4": "Numeric",
+  "serial8": "Numeric",
   "bool": "Bool",
   "bpchar": "Char",
-  // "bytea": "Uint8List",
-  "date": "DateTime",
-  "text": "Char",
   "varchar": "Char",
-  "float4": "Numeric",
-  "numeric": "Numeric",
+  "text": "Char",
+  "date": "DateTime",
 };

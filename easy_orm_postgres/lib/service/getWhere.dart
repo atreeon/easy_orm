@@ -24,7 +24,7 @@ SqlRequest getWhere<TDef extends ITableDefinition>(
         .getWhereFromCommand(whereObj)
         .prependSql("where ");
   } else {
-    return SqlRequest("where ", {});
+    return SqlRequest("", {});
   }
 }
 

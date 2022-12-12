@@ -35,6 +35,7 @@ DROP TABLE IF EXISTS us_states;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS region;
 DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS supported_data_types;
 
 --
 -- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -242,6 +243,47 @@ CREATE TABLE us_states (
     state_region character varying(50)
 );
 
+CREATE SEQUENCE public.numeric_data_types_serial2_col_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE public.numeric_data_types_serial4_col_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE public.numeric_data_types_serial8_col_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE TABLE supported_data_types (
+	int2_col int2 NOT NULL,
+	int4_col int4 NULL,
+	int8_col int8 NULL,
+	bigint_col bigint NULL,
+	numeric_col numeric NULL,
+	float4_col float4 NULL,
+	float8_col float8 NULL,
+	serial2_col int2 NOT NULL DEFAULT nextval('numeric_data_types_serial2_col_seq'::regclass),
+	serial4_col int4 NOT NULL DEFAULT nextval('numeric_data_types_serial4_col_seq'::regclass),
+	serial8_col int8 NOT NULL DEFAULT nextval('numeric_data_types_serial8_col_seq'::regclass),
+	bool_col bool NULL,
+	char_col bpchar(1) NULL,
+	varchar_col varchar NULL,
+	text_col text NULL,
+	date_col date NULL
+);
 
 --
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: -
@@ -3691,7 +3733,7 @@ INSERT INTO us_states VALUES (51, 'Wyoming', 'WY', 'west');
 
 
 --
--- Name: pk_categories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_categories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY categories
@@ -3699,7 +3741,7 @@ ALTER TABLE ONLY categories
 
 
 --
--- Name: pk_customer_customer_demo; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_customer_customer_demo; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY customer_customer_demo
@@ -3707,7 +3749,7 @@ ALTER TABLE ONLY customer_customer_demo
 
 
 --
--- Name: pk_customer_demographics; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_customer_demographics; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY customer_demographics
@@ -3715,7 +3757,7 @@ ALTER TABLE ONLY customer_demographics
 
 
 --
--- Name: pk_customers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_customers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY customers
@@ -3723,7 +3765,7 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: pk_employees; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_employees; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY employees
@@ -3731,7 +3773,7 @@ ALTER TABLE ONLY employees
 
 
 --
--- Name: pk_employee_territories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_employee_territories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY employee_territories
@@ -3739,7 +3781,7 @@ ALTER TABLE ONLY employee_territories
 
 
 --
--- Name: pk_order_details; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_order_details; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY order_details
@@ -3747,7 +3789,7 @@ ALTER TABLE ONLY order_details
 
 
 --
--- Name: pk_orders; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_orders; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY orders
@@ -3755,7 +3797,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: pk_products; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_products; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY products
@@ -3763,7 +3805,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: pk_region; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_region; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY region
@@ -3771,7 +3813,7 @@ ALTER TABLE ONLY region
 
 
 --
--- Name: pk_shippers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_shippers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY shippers
@@ -3779,7 +3821,7 @@ ALTER TABLE ONLY shippers
 
 
 --
--- Name: pk_suppliers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_suppliers; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY suppliers
@@ -3787,7 +3829,7 @@ ALTER TABLE ONLY suppliers
 
 
 --
--- Name: pk_territories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_territories; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY territories
@@ -3795,7 +3837,7 @@ ALTER TABLE ONLY territories
 
 
 --
--- Name: pk_usstates; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pk_usstates; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY us_states

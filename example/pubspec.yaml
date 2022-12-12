@@ -9,6 +9,7 @@ dependencies:
   easy_orm_postgres:
     path: ../easy_orm_postgres
   postgres: ^2.5.0
+  json_annotation: ^4.7.0
 
 dev_dependencies:
   build_runner: ^2.1.4

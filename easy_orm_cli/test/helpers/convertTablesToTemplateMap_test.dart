@@ -1,10 +1,10 @@
 import 'package:easy_orm_cli/helpers/Column.dart';
 import 'package:easy_orm_cli/helpers/Table.dart';
-import 'package:easy_orm_cli/helpers/tablesToTemplateMap.dart';
+import 'package:easy_orm_cli/helpers/convertTablesToTemplateMap.dart';
 import 'package:test/test.dart';
 
 main() {
-  group("tablesToDefinitionMap", () {
+  group("convertTablesToTemplateMap", () {
     test('d1', () async {
       var tablesInput = [
         Table("employees", <Column>[
@@ -20,7 +20,7 @@ main() {
       var expected = {
         "employeesDefinition.dart": {
           'packageName': 'example',
-          "name": "Employees",
+          "definitionName": "EmployeesDefinition",
           "tableName": "employees",
           "columns": [
             {"dbType": "int4", "dartType": "int", "columnName": "employee_id", "nullable": "false", "tableName": "employees", "columnType": "Numeric", "modelName": "Employee", "isIdentity": "false"},
@@ -39,7 +39,7 @@ main() {
         },
         "usersDefinition.dart": {
           'packageName': 'example',
-          "name": "Users",
+          "definitionName": "UsersDefinition",
           "tableName": "users",
           "columns": [
             {"dbType": "int4", "dartType": "int", "columnName": "user_id", "nullable": "false", "tableName": "users", "columnType": "Numeric", "modelName": "User", "isIdentity": "true"},
@@ -58,7 +58,7 @@ main() {
         }
       };
 
-      var actual = convertTablesToTemplateMap(tablesInput, "example", (x) => x.name + "Definition.dart");
+      var actual = convertTablesToTemplateMap(tablesInput, "example", (x) => x.tableName + "Definition.dart");
 
       expect(actual, expected);
     });
