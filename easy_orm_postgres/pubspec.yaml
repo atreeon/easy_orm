@@ -1,6 +1,6 @@
 name: easy_orm_postgres
 description: A simple ORM for Dart & Postgresql
-version: 0.3.1
+version: 0.4.0
 repository: https://github.com/atreeon/easy_orm/
 
 environment:

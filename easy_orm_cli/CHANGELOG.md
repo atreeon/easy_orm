@@ -1,3 +1,7 @@
+## 0.4.0
+- more datatypes allowed
+- except & only (whitelist) on tables & columns
+
 ## 0.3.3
 - Pointless rename!
 

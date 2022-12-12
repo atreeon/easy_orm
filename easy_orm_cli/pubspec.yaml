@@ -1,6 +1,6 @@
 name: easy_orm_cli
 description: The CLI used to generate ORM code for easy_orm.
-version: 0.3.3
+version: 0.4.0
 executables:
   easy_orm_cli:
 repository: https://github.com/atreeon/easy_orm/
