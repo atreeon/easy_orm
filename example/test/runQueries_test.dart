@@ -8,7 +8,6 @@ import 'package:example/generatedDb/db/Db.dart';
 import 'package:example/generatedDb/definitions/EmployeesDefinition.dart';
 import 'package:example/generatedDb/definitions/TerritoriesDefinition.dart';
 import 'package:example/generatedDb/definitions/Us_statesDefinition.dart';
-import 'package:example/generatedDb/models/Categorie.dart';
 import 'package:example/generatedDb/models/Employee.dart';
 import 'package:example/generatedDb/models/Territorie.dart';
 import 'package:example/generatedDb/models/Us_state.dart';
@@ -41,7 +40,7 @@ void main() {
   group("sql vs easy_orm examples", () {
     test("1y select *", () async {
       var result = await Db().categories.selectQuery();
-      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
+      var resultFormatted = (result as SqlResponse_Success<List<dynamic>>).result.length;
       expect(resultFormatted, 8);
     });
 
@@ -50,8 +49,8 @@ void main() {
             where: (x) => Where(x.unit_price.gt(10)),
           );
 
-      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
-      expect(resultFormatted, 8);
+      var resultFormatted = (result as SqlResponse_Success<List<dynamic>>).result.length;
+      expect(resultFormatted, 63);
     });
 
     test("1y select 2 columns", () async {
@@ -60,15 +59,15 @@ void main() {
             ((e) => e.category_id),
           );
 
-      var resultFormatted = (result as SqlResponse_Success<List<Categorie>>).result.length;
-      expect(resultFormatted, 8);
+      var resultFormatted = (result as SqlResponse_Success<List<dynamic>>).result.length;
+      expect(resultFormatted, 77);
     });
 
     test("1y distinct", () async {
       var result = await Db().products.selectQuery1Col(
-        ((e) => e.supplier_id),
-      );
-      var supplierIds = (result as SqlResponse_Success<List<int?>>).result;
+            ((e) => e.supplier_id),
+          );
+      var supplierIds = (result as SqlResponse_Success<List<dynamic>>).result;
       supplierIds.toSet();
 
       expect(supplierIds.length, 77);
