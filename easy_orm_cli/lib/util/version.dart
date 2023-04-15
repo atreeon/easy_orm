@@ -1,6 +1,6 @@
 import 'print.dart';
 
-var version = "0.3.3";
+var version = "0.4.0";
 
 /// Get the current version
 void printVersion() {
