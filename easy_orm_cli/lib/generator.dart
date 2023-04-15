@@ -23,8 +23,12 @@ Future<List<String>> performGenerate(
 }) async {
   //hardcode directory because it should really live under lib
 
+  final rootGeneratedDir = Directory("lib/generatedDb");
+  if (rootGeneratedDir.existsSync()) {
+    await rootGeneratedDir.delete(recursive: true);
+  }
   await Future.wait([
-    Directory("lib/generatedDb"),
+    rootGeneratedDir,
     Directory("lib/generatedDb/models"),
     Directory("lib/generatedDb/definitions"),
     Directory("lib/generatedDb/db"),
@@ -63,20 +67,24 @@ Future<List<String>> performGenerate(
   //   writeFiles: writeFiles,
   // );
 
-  //process definition template
   Logger.status("Writing files...");
-  var definitionTemplater = Templater(
-    templateMain: definition_template,
-    templatesOther: {
-      "propertySet_subTemplate": propertySet_subTemplate,
-      "column_subTemplate": column_subTemplate,
-    },
-  );
-  var definitionOutput = await definitionTemplater.writeFiles(
-    "lib/generatedDb/definitions",
-    definitionMap,
-    writeFiles: writeFiles,
-  );
+  final output = <String>[];
+  //process definition template
+  if (!options.only_generate_models) {
+    var definitionTemplater = Templater(
+      templateMain: definition_template,
+      templatesOther: {
+        "propertySet_subTemplate": propertySet_subTemplate,
+        "column_subTemplate": column_subTemplate,
+      },
+    );
+    var definitionOutput = await definitionTemplater.writeFiles(
+      "lib/generatedDb/definitions",
+      definitionMap,
+      writeFiles: writeFiles,
+    );
+    output.addAll(definitionOutput);
+  }
 
   //process model template
   var modelTemplater = Templater(
@@ -91,26 +99,25 @@ Future<List<String>> performGenerate(
     modelMap,
     writeFiles: writeFiles,
   );
+  output.addAll(modelOutput);
 
   //process db template
-  var dbTemplater = Templater(
-    templateMain: db_template,
-    templatesOther: {
-      "importStatementTemplate": db_importStatement_template,
-      "tableNameTemplate": db_table_template,
-    },
-  );
-  var dbOutput = //
-      await dbTemplater.writeFiles(
-    "lib/generatedDb/db",
-    dbMap,
-    writeFiles: writeFiles,
-  );
+  if (!options.only_generate_models) {
+    var dbTemplater = Templater(
+      templateMain: db_template,
+      templatesOther: {
+        "importStatementTemplate": db_importStatement_template,
+        "tableNameTemplate": db_table_template,
+      },
+    );
+    var dbOutput = //
+        await dbTemplater.writeFiles(
+      "lib/generatedDb/db",
+      dbMap,
+      writeFiles: writeFiles,
+    );
+    output.addAll(dbOutput);
+  }
 
-  return [
-    // ...serviceOutput,
-    ...definitionOutput,
-    ...modelOutput,
-    ...dbOutput,
-  ];
+  return output;
 }

@@ -18,6 +18,7 @@ class GeneratorOptions with _$GeneratorOptions {
     @Default("public") String schema,
     required String package,
     @Default(true) bool build_runner,
+    @Default(false) bool only_generate_models,
     @YamlMapToMapConverter()
     @Default(<String, dynamic>{})
         Map<String, dynamic> sql_to_dart_type_conversion_overrides,

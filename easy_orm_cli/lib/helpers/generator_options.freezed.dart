@@ -28,6 +28,7 @@ mixin _$GeneratorOptions {
   String get schema => throw _privateConstructorUsedError;
   String get package => throw _privateConstructorUsedError;
   bool get build_runner => throw _privateConstructorUsedError;
+  bool get only_generate_models => throw _privateConstructorUsedError;
   @YamlMapToMapConverter()
   Map<String, dynamic> get sql_to_dart_type_conversion_overrides =>
       throw _privateConstructorUsedError;
@@ -55,6 +56,7 @@ abstract class $GeneratorOptionsCopyWith<$Res> {
       String schema,
       String package,
       bool build_runner,
+      bool only_generate_models,
       @YamlMapToMapConverter()
           Map<String, dynamic> sql_to_dart_type_conversion_overrides,
       @YamlMapToMapListConverter()
@@ -82,6 +84,7 @@ class _$GeneratorOptionsCopyWithImpl<$Res, $Val extends GeneratorOptions>
     Object? schema = null,
     Object? package = null,
     Object? build_runner = null,
+    Object? only_generate_models = null,
     Object? sql_to_dart_type_conversion_overrides = null,
     Object? exclude = null,
   }) {
@@ -118,6 +121,10 @@ class _$GeneratorOptionsCopyWithImpl<$Res, $Val extends GeneratorOptions>
           ? _value.build_runner
           : build_runner // ignore: cast_nullable_to_non_nullable
               as bool,
+      only_generate_models: null == only_generate_models
+          ? _value.only_generate_models
+          : only_generate_models // ignore: cast_nullable_to_non_nullable
+              as bool,
       sql_to_dart_type_conversion_overrides: null ==
               sql_to_dart_type_conversion_overrides
           ? _value.sql_to_dart_type_conversion_overrides
@@ -148,6 +155,7 @@ abstract class _$$_GeneratorOptionsCopyWith<$Res>
       String schema,
       String package,
       bool build_runner,
+      bool only_generate_models,
       @YamlMapToMapConverter()
           Map<String, dynamic> sql_to_dart_type_conversion_overrides,
       @YamlMapToMapListConverter()
@@ -173,6 +181,7 @@ class __$$_GeneratorOptionsCopyWithImpl<$Res>
     Object? schema = null,
     Object? package = null,
     Object? build_runner = null,
+    Object? only_generate_models = null,
     Object? sql_to_dart_type_conversion_overrides = null,
     Object? exclude = null,
   }) {
@@ -209,6 +218,10 @@ class __$$_GeneratorOptionsCopyWithImpl<$Res>
           ? _value.build_runner
           : build_runner // ignore: cast_nullable_to_non_nullable
               as bool,
+      only_generate_models: null == only_generate_models
+          ? _value.only_generate_models
+          : only_generate_models // ignore: cast_nullable_to_non_nullable
+              as bool,
       sql_to_dart_type_conversion_overrides: null ==
               sql_to_dart_type_conversion_overrides
           ? _value._sql_to_dart_type_conversion_overrides
@@ -235,6 +248,7 @@ class _$_GeneratorOptions extends _GeneratorOptions {
       this.schema = "public",
       required this.package,
       this.build_runner = true,
+      this.only_generate_models = false,
       @YamlMapToMapConverter()
           final Map<String, dynamic>
               sql_to_dart_type_conversion_overrides = const <String, dynamic>{},
@@ -267,6 +281,9 @@ class _$_GeneratorOptions extends _GeneratorOptions {
   @override
   @JsonKey()
   final bool build_runner;
+  @override
+  @JsonKey()
+  final bool only_generate_models;
   final Map<String, dynamic> _sql_to_dart_type_conversion_overrides;
   @override
   @JsonKey()
@@ -290,7 +307,7 @@ class _$_GeneratorOptions extends _GeneratorOptions {
 
   @override
   String toString() {
-    return 'GeneratorOptions(host: $host, port: $port, db: $db, username: $username, password: $password, schema: $schema, package: $package, build_runner: $build_runner, sql_to_dart_type_conversion_overrides: $sql_to_dart_type_conversion_overrides, exclude: $exclude)';
+    return 'GeneratorOptions(host: $host, port: $port, db: $db, username: $username, password: $password, schema: $schema, package: $package, build_runner: $build_runner, only_generate_models: $only_generate_models, sql_to_dart_type_conversion_overrides: $sql_to_dart_type_conversion_overrides, exclude: $exclude)';
   }
 
   @override
@@ -309,6 +326,8 @@ class _$_GeneratorOptions extends _GeneratorOptions {
             (identical(other.package, package) || other.package == package) &&
             (identical(other.build_runner, build_runner) ||
                 other.build_runner == build_runner) &&
+            (identical(other.only_generate_models, only_generate_models) ||
+                other.only_generate_models == only_generate_models) &&
             const DeepCollectionEquality().equals(
                 other._sql_to_dart_type_conversion_overrides,
                 _sql_to_dart_type_conversion_overrides) &&
@@ -327,6 +346,7 @@ class _$_GeneratorOptions extends _GeneratorOptions {
       schema,
       package,
       build_runner,
+      only_generate_models,
       const DeepCollectionEquality()
           .hash(_sql_to_dart_type_conversion_overrides),
       const DeepCollectionEquality().hash(_exclude));
@@ -355,6 +375,7 @@ abstract class _GeneratorOptions extends GeneratorOptions {
       final String schema,
       required final String package,
       final bool build_runner,
+      final bool only_generate_models,
       @YamlMapToMapConverter()
           final Map<String, dynamic> sql_to_dart_type_conversion_overrides,
       @YamlMapToMapListConverter()
@@ -380,6 +401,8 @@ abstract class _GeneratorOptions extends GeneratorOptions {
   String get package;
   @override
   bool get build_runner;
+  @override
+  bool get only_generate_models;
   @override
   @YamlMapToMapConverter()
   Map<String, dynamic> get sql_to_dart_type_conversion_overrides;

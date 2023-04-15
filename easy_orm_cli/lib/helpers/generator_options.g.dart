@@ -21,6 +21,8 @@ _$_GeneratorOptions _$$_GeneratorOptionsFromJson(Map<String, dynamic> json) =>
           package: $checkedConvert('package', (v) => v as String),
           build_runner:
               $checkedConvert('build_runner', (v) => v as bool? ?? true),
+          only_generate_models: $checkedConvert(
+              'only_generate_models', (v) => v as bool? ?? false),
           sql_to_dart_type_conversion_overrides: $checkedConvert(
               'sql_to_dart_type_conversion_overrides',
               (v) => v == null
@@ -46,6 +48,7 @@ Map<String, dynamic> _$$_GeneratorOptionsToJson(_$_GeneratorOptions instance) =>
       'schema': instance.schema,
       'package': instance.package,
       'build_runner': instance.build_runner,
+      'only_generate_models': instance.only_generate_models,
       'sql_to_dart_type_conversion_overrides': const YamlMapToMapConverter()
           .toJson(instance.sql_to_dart_type_conversion_overrides),
       'exclude': const YamlMapToMapListConverter().toJson(instance.exclude),
