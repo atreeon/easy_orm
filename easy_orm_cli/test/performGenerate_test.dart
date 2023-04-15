@@ -1,20 +1,26 @@
 @Tags(['integration'])
 import 'package:easy_orm_cli/generator.dart';
-import 'package:easy_orm_postgres/dbConnection/getPostgresConnectionFromConfig.dart';
+import 'package:easy_orm_cli/helpers/generator_options.dart';
+import 'package:easy_orm_postgres/dbConnection/getDbConnectionValuesFromConfig.dart';
 import 'package:test/test.dart';
 
 import 'helpers/convertTables_expectedResults/expectedDb.dart';
 import 'helpers/convertTables_expectedResults/expectedDefinition.dart';
 import 'helpers/convertTables_expectedResults/expectedModel.dart';
 
-
 void main() {
   Future<List<String>> _performGenerate() async {
-    var cn = await getPostgresConnectionFromConfig();
+    var cn = await getDbConnectionValuesFromConfig();
     var result = await performGenerate(
-      postgresConnection: cn,
+      GeneratorOptions(
+        host: cn.host,
+        port: cn.port,
+        db: cn.db,
+        username: cn.username,
+        password: cn.password,
+        package: 'example',
+      ),
       writeFiles: false, //don't write the results
-      packageName: "example",
     );
     return result;
   }

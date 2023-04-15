@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:easy_orm_cli/util/logger.dart';
+
 Future<bool> checkFolderStructure() async {
-  if (!await File("pubspec.yaml").exists() || !await File("pubspec.yaml").exists()) {
-    print('pubspec.yaml file not found, must be a dart application');
+  if (!File("pubspec.yaml").existsSync()) {
+    Logger.error(
+        'pubspec.yaml file not found, you must run this command from the root of your Dart/Flutter project');
     print(Directory.current.path);
     var dir = Directory.current;
     var entities = await dir.list().toList();
@@ -10,13 +13,13 @@ Future<bool> checkFolderStructure() async {
     return false;
   }
 
-  if (!await Directory("lib").exists()) {
-    print('lib folder must exist');
+  if (!Directory("lib").existsSync()) {
+    Logger.error(
+        'lib folder not found, you must run this command from the root of your Dart/Flutter project');
     print(Directory.current.path);
     var dir = Directory.current;
     var entities = await dir.list().toList();
     print(entities.join(","));
-    print('lib folder must exist');
     return false;
   }
   return true;

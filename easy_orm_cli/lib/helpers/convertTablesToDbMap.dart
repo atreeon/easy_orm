@@ -1,9 +1,11 @@
+import 'package:easy_orm_cli/helpers/generator_options.dart';
+
 import 'Table.dart';
 
 ///converts our list of Tables & Columns to our Map to be used in our templates
 Map<String, Map<String, dynamic>> convertTablesToDbMap(
   List<Table> tables,
-  String packageName,
+  GeneratorOptions options,
 ) {
   var result = {
     "Db.dart": //
@@ -19,14 +21,14 @@ Map<String, Map<String, dynamic>> convertTablesToDbMap(
           .map((e) => {
                 "filename": e.modelName,
                 "directory": "models",
-                "packageName": packageName,
+                "packageName": options.package,
               })
           .toList(),
       "definitions": tables
           .map((e) => {
                 "filename": e.definitionName,
                 "directory": "definitions",
-                "packageName": packageName,
+                "packageName": options.package,
               })
           .toList(),
     }

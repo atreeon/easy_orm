@@ -28,7 +28,7 @@ void main() {
 
     test("a2", () {
       var sut = processExcludeListYaml;
-      expect(() => sut(sampleExcludeList3_empty), throws);
+      expect(() => sut(sampleExcludeList3_empty), throwsException);
     });
 
     test("a3", () {

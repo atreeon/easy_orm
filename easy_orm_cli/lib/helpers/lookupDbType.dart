@@ -8,8 +8,8 @@ String lookupDbType(String dbType, Map<String, String> lookup) {
   return result;
 }
 
-List<String> getSupportedDataTypes(){
-  return convertDbTypeToDartType.keys.toList();
+Set<String> getSupportedDataTypes() {
+  return convertDbTypeToDartType.keys.toSet();
 }
 
 // var unsupportedColumnTypes = [
@@ -58,7 +58,15 @@ var convertDbTypeToDartType = {
   "bpchar": "String",
   "varchar": "String",
   "text": "String",
+  "uuid": "String",
+  "json": "String",
   "date": "DateTime",
+  "time": "DateTime",
+  "timez": "DateTime",
+  "timetz": "DateTime",
+  "timestamp": "DateTime",
+  "timestampz": "DateTime",
+  "timestamptz": "DateTime",
 };
 
 var convertDbTypeToColumnType = {
@@ -75,5 +83,13 @@ var convertDbTypeToColumnType = {
   "bpchar": "Char",
   "varchar": "Char",
   "text": "Char",
+  "uuid": "Char",
+  "json": "Char",
   "date": "DateTime",
+  "time": "DateTime",
+  "timez": "DateTime",
+  "timetz": "DateTime",
+  "timestamp": "DateTime",
+  "timestampz": "DateTime",
+  "timestamptz": "DateTime",
 };

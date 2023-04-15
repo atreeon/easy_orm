@@ -4,6 +4,7 @@ import 'package:easy_orm_cli/helpers/convertRawTablesToTables.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToDbMap.dart';
 import 'package:easy_orm_cli/helpers/convertTablesToTemplateMap.dart';
 import 'package:easy_orm_cli/helpers/filterTables.dart';
+import 'package:easy_orm_cli/helpers/generator_options.dart';
 import 'package:easy_orm_cli/helpers/getTablesRawFromDb.dart';
 import 'package:easy_orm_cli/templates/column_subTemplate.dart';
 import 'package:easy_orm_cli/templates/db_importStatement_template.dart';
@@ -13,48 +14,46 @@ import 'package:easy_orm_cli/templates/definition_template.dart';
 import 'package:easy_orm_cli/templates/modelParameters_subTemplate.dart';
 import 'package:easy_orm_cli/templates/model_template.dart';
 import 'package:easy_orm_cli/templates/propertySet_subTemplate.dart';
-import 'package:postgres/postgres.dart';
+import 'package:easy_orm_cli/util/logger.dart';
 import 'package:templater_atreeon/templater_atreeon.dart';
 
-Future<List<String>> performGenerate({
-  required PostgreSQLConnection postgresConnection,
-  required String packageName,
-  String table_schema = "public",
+Future<List<String>> performGenerate(
+  GeneratorOptions options, {
   bool writeFiles = true,
 }) async {
   //hardcode directory because it should really live under lib
 
-  if (!await Directory("lib/generatedDb").exists()) {
-    await Directory("lib/generatedDb").create();
-  }
-
-  if (!await Directory("lib/generatedDb/models").exists()) {
-    await Directory("lib/generatedDb/models").create();
-  }
-
-  if (!await Directory("lib/generatedDb/definitions").exists()) {
-    await Directory("lib/generatedDb/definitions").create();
-  }
-
-  if (!await Directory("lib/generatedDb/db").exists()) {
-    await Directory("lib/generatedDb/db").create();
-  }
+  await Future.wait([
+    Directory("lib/generatedDb"),
+    Directory("lib/generatedDb/models"),
+    Directory("lib/generatedDb/definitions"),
+    Directory("lib/generatedDb/db"),
+    Directory("lib/generatedDb/services"),
+  ].map((dir) async {
+    if (!dir.existsSync()) {
+      await dir.create();
+    }
+  }));
 
   // if (!await Directory("lib/generatedDb/services").exists()) {
   //   await Directory("lib/generatedDb/services").create();
   // }
 
   //get the list of tables from the db
-  var tablesRaw = await getTablesRawFromDb(postgresConnection, table_schema);
+  Logger.status("Getting schema from database...");
+  var tablesRaw =
+      await getTablesRawFromDb(options.postgresConnection, options.schema);
   var tables1 = convertRawTablesToTables(tablesRaw);
-  var tables = await filterTables(tables1);
+  var tables = filterTables(tables1, options);
 
   //get maps for each template
   //We've removed service file from the generated output files
   // var serviceMap = convertTablesToTemplateMap(tables, packageName, (x) => StringUtils.capitalize(x.name) + "Service.dart");
-  var definitionMap = convertTablesToTemplateMap(tables, packageName, (x) => x.definitionName + ".dart");
-  var modelMap = convertTablesToTemplateMap(tables, packageName, (x) => x.modelName + ".dart");
-  var dbMap = convertTablesToDbMap(tables, packageName);
+  var definitionMap = convertTablesToTemplateMap(
+      tables, options, (x) => x.definitionName + ".dart");
+  var modelMap =
+      convertTablesToTemplateMap(tables, options, (x) => x.modelName + ".dart");
+  var dbMap = convertTablesToDbMap(tables, options);
 
   // //process service template
   // var serviceTemplater = Templater(templateMain: service_template);
@@ -65,6 +64,7 @@ Future<List<String>> performGenerate({
   // );
 
   //process definition template
+  Logger.status("Writing files...");
   var definitionTemplater = Templater(
     templateMain: definition_template,
     templatesOther: {
